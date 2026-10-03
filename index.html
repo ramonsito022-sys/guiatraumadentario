@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS Dentário - Protocolo de Traumatismo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'dental-blue': '#0077b6',
+                        'dental-light': '#caf0f8',
+                        'emergency-red': '#e63946',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lux-card {
+            transition: all 0.3s ease;
+        }
+        .lux-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal Overlay */
+        #custom-modal {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #custom-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans flex flex-col min-h-screen">
+
+    <header class="bg-emergency-red text-white py-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="flex items-center gap-3 mb-2 md:mb-0">
+                <div class="bg-white text-emergency-red rounded-full w-10 h-10 flex items-center justify-center text-xl shadow-inner font-bold">
+                    <i class="fa-solid fa-truck-medical animate-pulse"></i>
+                </div>
+                <h1 class="text-2xl font-bold uppercase tracking-wide">Emergência Odontológica?</h1>
+            </div>
+            <div>
+                <p class="font-medium text-red-100 hidden md:block">Protocolo Rápido de Primeiros Socorros para Traumatismo Dentário</p>
+                <a href="#alerta" class="md:hidden inline-block bg-white text-emergency-red px-4 py-1 rounded-full text-sm font-bold mt-2">Ir para Checklist</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="container mx-auto px-4 py-12 lg:py-20">
+        <div class="flex flex-col lg:flex-row items-center gap-10">
+            <div class="lg:w-1/2 space-y-6">
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-dental-blue font-semibold text-sm uppercase tracking-wider mb-2">Mantenha a calma</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">O que é o <span class="text-dental-blue">Traumatismo Dentário?</span></h2>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    Bateu a boca? Caiu? O traumatismo dentário é qualquer lesão nos dentes, gengivas ou ossos da face devido a impactos. 
+                    A rapidez com que você age nos primeiros minutos pode <strong>salvar o seu dente</strong>.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#avulsao" class="bg-dental-blue hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-tooth"></i> Meu dente caiu inteiro
+                    </a>
+                    <a href="#luxacao" class="bg-white border-2 border-slate-200 hover:border-dental-blue text-slate-700 px-6 py-3 rounded-xl font-semibold shadow-sm transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-up-down-left-right"></i> Meu dente entortou/amoleceu
+                    </a>
+                </div>
+            </div>
+            <div class="lg:w-1/2 w-full">
+                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dentista examinando paciente" class="rounded-2xl shadow-2xl object-cover h-[400px] w-full border-4 border-white">
+            </div>
+        </div>
+    </section>
+
+    <section id="avulsao" class="bg-dental-light py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-3">
+                    <span class="bg-emergency-red text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-tooth"></i></span>
+                    Avulsão Dentária
+                </h2>
+                <p class="text-lg text-slate-700">O dente caiu inteiro (com a raiz)? O tempo é seu maior inimigo. <strong>Você tem cerca de 60 minutos!</strong> Siga os passos abaixo imediatamente:</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden max-w-5xl mx-auto flex flex-col md:flex-row">
+                
+                <!-- Navegação do Stepper -->
+                <div class="md:w-1/3 bg-slate-50 border-r border-slate-100 p-6">
+                    <ul class="space-y-4 relative" id="stepper-nav">
+                        <div class="absolute left-6 top-10 bottom-10 w-0.5 bg-slate-200 z-0 hidden md:block"></div>
+                        
+                        <li class="relative z-10">
+                            <button onclick="changeStep(1)" class="step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-blue-50 border border-dental-blue text-dental-blue font-bold">
+                                <span class="w-8 h-8 rounded-full bg-dental-blue text-white flex items-center justify-center font-bold shadow-md shrink-0">1</span>
+                                Encontrar
+                            </button>
+                        </li>
+                        <li class="relative z-10">
+                            <button onclick="changeStep(2)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
+                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">2</span>
+                                Como Segurar
+                            </button>
+                        </li>
+                        <li class="relative z-10">
+                            <button onclick="changeStep(3)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
+                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">3</span>
+                                Lavar
+                            </button>
+                        </li>
+                        <li class="relative z-10">
+                            <button onclick="changeStep(4)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
+                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">4</span>
+                                Armazenar
+                            </button>
+                        </li>
+                        <li class="relative z-10">
+                            <button onclick="changeStep(5)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
+                                <span class="w-8 h-8 rounded-full bg-emergency-red text-white flex items-center justify-center font-bold shrink-0 shadow-md">5</span>
+                                <span class="text-emergency-red font-bold">Dentista Já!</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="md:w-2/3 p-8 md:p-12 relative flex items-center">
+                    <!-- Passo 1 -->
+                    <div id="step-1" class="step-content active w-full text-center md:text-left">
+                        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Procurando" class="w-full h-48 object-cover rounded-xl mb-6 shadow-sm">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-magnifying-glass text-dental-blue mr-2"></i> 1. Encontre o dente imediatamente</h3>
+                        <p class="text-slate-600 text-lg mb-6">Mantenha a calma do paciente e procure o dente que caiu. É fundamental recuperá-lo o mais rápido possível para aumentar as chances de reimplante.</p>
+                        <button onclick="changeStep(2)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+
+                    <!-- Passo 2 -->
+                    <div id="step-2" class="step-content w-full text-center md:text-left">
+                        <i class="fa-solid fa-hand-holding text-5xl text-dental-blue mb-6"></i>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Segure apenas pela coroa</h3>
+                        <p class="text-slate-600 text-lg mb-6">
+                            <strong>NUNCA</strong> toque na raiz do dente (a parte amarelada e pontuda que fica dentro da gengiva). Segure sempre pela <strong>coroa</strong> (a parte branca que usamos para mastigar). Tocar na raiz destrói células vitais para o dente "colar" novamente.
+                        </p>
+                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                            <button onclick="changeStep(1)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
+                            <button onclick="changeStep(3)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Passo 3 -->
+                    <div id="step-3" class="step-content w-full text-center md:text-left">
+                        <i class="fa-solid fa-faucet-drip text-5xl text-dental-blue mb-6"></i>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Lave delicadamente (se estiver sujo)</h3>
+                        <p class="text-slate-600 text-lg mb-6">
+                            Se o dente caiu na terra ou está sujo, lave-o com soro fisiológico, leite ou água fria corrente por <strong>no máximo 10 segundos</strong>.
+                            <br><br>
+                            <span class="text-emergency-red font-bold"><i class="fa-solid fa-ban"></i> Não esfregue, não use sabão e não seque com toalha!</span>
+                        </p>
+                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                            <button onclick="changeStep(2)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
+                            <button onclick="changeStep(4)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Passo 4 -->
+                    <div id="step-4" class="step-content w-full text-center md:text-left">
+                        <i class="fa-solid fa-glass-water text-5xl text-dental-blue mb-6"></i>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Recoloque ou Armazene corretamente</h3>
+                        <div class="bg-blue-50 border-l-4 border-dental-blue p-4 rounded-r-lg mb-6 text-left">
+                            <p class="font-bold text-slate-800 mb-2">Opção A: Recolocar (O Ideal)</p>
+                            <p class="text-slate-600 mb-4 text-sm">Se o paciente for adulto/adolescente cooperativo, tente colocar o dente de volta no buraco da gengiva e peça para morder um lenço de papel para segurar.</p>
+                            
+                            <p class="font-bold text-slate-800 mb-2">Opção B: Armazenar (Se não der pra recolocar)</p>
+                            <p class="text-slate-600 text-sm">Coloque o dente imerso em <strong>Leite frio</strong>, Soro Fisiológico ou saliva (no potinho, ou dentro da bochecha do paciente se ele não for engolir). <strong class="text-red-500">Nunca armazene em água pura!</strong></p>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                            <button onclick="changeStep(3)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
+                            <button onclick="changeStep(5)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Passo 5 -->
+                    <div id="step-5" class="step-content w-full text-center md:text-left">
+                        <div class="inline-block p-4 bg-red-100 rounded-full mb-6">
+                            <i class="fa-solid fa-hospital text-5xl text-emergency-red"></i>
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-emergency-red mb-4">5. Corra para o Dentista!</h3>
+                        <p class="text-slate-700 text-lg mb-6">
+                            Cada minuto conta! As maiores taxas de sucesso ocorrem quando o dente é reimplantado em <strong>menos de 30 a 60 minutos</strong> após a queda. Ligue para a clínica no caminho para que a equipe prepare o atendimento de emergência.
+                        </p>
+                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                            <button onclick="changeStep(4)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="luxacao" class="container mx-auto px-4 py-16">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">
+                Luxação Dentária
+            </h2>
+            <p class="text-lg text-slate-600">O dente bateu, não caiu inteiro, mas sofreu danos. Pode estar mole, torto, afundado ou alongado. Conheça os tipos e o que fazer:</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card Concussão -->
+            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-concussao', this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-dental-blue text-2xl">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold uppercase">Leve</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Concussão</h3>
+                <p class="text-slate-600 text-sm mb-4">O dente sofreu uma pancada, não está mole e não saiu do lugar, mas <strong>dói muito ao toque ou mastigação</strong>.</p>
+                <div id="det-concussao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
+                    <strong>O que fazer:</strong> Dieta macia/pastosa, evite morder com o dente afetado. Procure o dentista para acompanhamento (risco do canal necrozar no futuro).
+                </div>
+                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+            </div>
+
+            <!-- Card Subluxação -->
+            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-subluxacao', this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-dental-blue text-2xl">
+                        <i class="fa-solid fa-arrows-left-right"></i>
+                    </div>
+                    <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded font-bold uppercase">Atenção</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Subluxação</h3>
+                <p class="text-slate-600 text-sm mb-4">Houve impacto. O dente está <strong>um pouco mole</strong> e sangra um pouco na gengiva, mas não mudou de posição.</p>
+                <div id="det-subluxacao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
+                    <strong>O que fazer:</strong> Não fique testando a mobilidade com a língua ou dedo! Dieta líquida/pastosa. Agende com o dentista, ele pode precisar imobilizar o dente (contenção).
+                </div>
+                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+            </div>
+
+            <!-- Card Luxação Lateral -->
+            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-lateral', this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
+                        <i class="fa-solid fa-arrow-turn-up" style="transform: rotate(45deg);"></i>
+                    </div>
+                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Urgente</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Luxação Lateral</h3>
+                <p class="text-slate-600 text-sm mb-4">O dente <strong>entortou</strong> (para frente, trás ou lados) rompendo o osso ao redor. Fica travado na nova posição e dói muito.</p>
+                <div id="det-lateral" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
+                    <strong>O que fazer:</strong> Não tente desentortar em casa! Vá ao dentista imediatamente. O profissional usará anestesia para reposicionar e imobilizar o dente.
+                </div>
+                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+            </div>
+            
+            <!-- Card Intrusão -->
+            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-intrusao', this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </div>
+                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Grave</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Intrusão</h3>
+                <p class="text-slate-600 text-sm mb-4">O dente <strong>afundou</strong> para dentro da gengiva/osso. Em casos severos, pode parecer que o dente sumiu.</p>
+                <div id="det-intrusao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
+                    <strong>O que fazer:</strong> É o trauma mais severo (exceto avulsão). Requer radiografia imediata. O dentista decidirá se aguarda o dente re-erupcionar ou se faz tração ortodôntica/cirúrgica.
+                </div>
+                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+            </div>
+
+            <!-- Card Extrusão -->
+            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-extrusao', this)">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </div>
+                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Urgente</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Extrusão</h3>
+                <p class="text-slate-600 text-sm mb-4">O dente <strong>"cresceu"</strong>, ou seja, saiu parcialmente do alvéolo, mas não caiu totalmente. Fica bastante solto e alongado.</p>
+                <div id="det-extrusao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
+                    <strong>O que fazer:</strong> Vá ao dentista em até 3 horas se possível. O profissional irá reposicioná-lo delicadamente na altura correta e aplicar uma contenção.
+                </div>
+                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+            </div>
+
+            <!-- Preenchimento grid -->
+            <div class="lux-card bg-slate-800 text-white rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-lg">
+                <i class="fa-solid fa-user-doctor text-4xl mb-4 text-blue-300"></i>
+                <h3 class="text-xl font-bold mb-2">Dica de Ouro</h3>
+                <p class="text-sm text-slate-300">Em TODOS os casos de luxação, evite morder alimentos duros nas próximas semanas e capriche na higiene para evitar infecções.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="alerta" class="bg-slate-100 py-16">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <div class="bg-white rounded-3xl p-8 shadow-xl">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 text-center">
+                    <i class="fa-solid fa-clipboard-list text-dental-blue mr-2"></i> Checklist Pós-Trauma
+                </h2>
+                <p class="text-slate-600 text-center mb-8">Marque os sintomas que o paciente está sentindo agora para avaliarmos a urgência.</p>
+                
+                <form id="checklist-form" class="space-y-4">
+                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
+                        <span class="ml-3 text-slate-700 font-medium">Sangramento na boca que não para.</span>
+                    </label>
+
+                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="media">
+                        <span class="ml-3 text-slate-700 font-medium">O dente mudou de cor (ficou escuro/acinzentado).</span>
+                    </label>
+
+                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
+                        <span class="ml-3 text-slate-700 font-medium">O paciente não consegue fechar a boca normalmente (dentes não encaixam).</span>
+                    </label>
+
+                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
+                        <span class="ml-3 text-slate-700 font-medium">Inchaço acentuado no rosto ou lábios.</span>
+                    </label>
+
+                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="baixa">
+                        <span class="ml-3 text-slate-700 font-medium">Pequena sensibilidade ao beber água gelada.</span>
+                    </label>
+
+                    <button type="button" onclick="analisarSintomas()" class="w-full mt-6 bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-stethoscope"></i> Analisar Sintomas
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-auto">
+        <div class="container mx-auto px-4">
+            <p class="mb-2"><i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i><strong>Aviso:</strong> Este guia é informativo e não substitui a avaliação clínica de um Cirurgião-Dentista.</p>
+            <p class="text-sm">Em caso de acidente de trânsito ou pancadas fortes na cabeça, desmaios, náuseas ou perda de memória, procure primeiro um <strong>Pronto-Socorro Médico (Hospital)</strong>.</p>
+            
+            <div class="mt-8 pt-6 border-t border-slate-800">
+                <p class="font-bold text-slate-200 text-lg">Feito por Equipe Trauma (By Tinho)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal de Alerta (Substitui o alert() nativo) -->
+    <div id="custom-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl transform transition-all text-center relative" id="modal-content">
+            <button onclick="fecharModal()" class="absolute top-4 right-5 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
+            
+            <div id="modal-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4">
+                <!-- Ícone injetado por JS -->
+            </div>
+            
+            <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+            <p id="modal-msg" class="text-slate-600 mb-6"></p>
+            
+            <button onclick="fecharModal()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica do Stepper de Avulsão
+        function changeStep(stepNumber) {
+            const contents = document.querySelectorAll('.step-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            document.getElementById(`step-${stepNumber}`).classList.add('active');
+
+            const buttons = document.querySelectorAll('.step-btn');
+            buttons.forEach((btn, index) => {
+                const btnStep = index + 1;
+                const numberCircle = btn.querySelector('span');
+
+                if(btnStep === stepNumber) {
+                    btn.className = 'step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-blue-50 border border-dental-blue text-dental-blue font-bold';
+                    numberCircle.className = 'w-8 h-8 rounded-full bg-dental-blue text-white flex items-center justify-center font-bold shadow-md shrink-0';
+                    
+                    if(stepNumber === 5) {
+                        btn.className = 'step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-red-50 border border-emergency-red text-emergency-red font-bold';
+                        numberCircle.className = 'w-8 h-8 rounded-full bg-emergency-red text-white flex items-center justify-center font-bold shadow-md shrink-0';
+                    }
+                } else {
+                    btn.className = 'step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer';
+                    numberCircle.className = 'w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0';
+                    
+                    if(btnStep === 5) {
+                        numberCircle.classList.add('text-emergency-red');
+                        numberCircle.classList.replace('bg-slate-200', 'bg-red-100');
+                    }
+                }
+            });
+        }
+
+        // Lógica dos Cards de Luxação (Accordion)
+        function toggleDetails(id, cardElement) {
+            const detailDiv = document.getElementById(id);
+            const isHidden = detailDiv.classList.contains('hidden');
+            const hint = cardElement.querySelector('.click-hint i');
+            
+            document.querySelectorAll('[id^="det-"]').forEach(el => {
+                el.classList.add('hidden');
+                const parent = el.parentElement;
+                const parentHint = parent.querySelector('.click-hint i');
+                if(parentHint) {
+                    parentHint.classList.remove('fa-chevron-up');
+                    parentHint.classList.add('fa-chevron-down');
+                }
+                parent.classList.remove('ring-2', 'ring-dental-blue', 'shadow-xl');
+            });
+
+            if (isHidden) {
+                detailDiv.classList.remove('hidden');
+                cardElement.classList.add('ring-2', 'ring-dental-blue', 'shadow-xl');
+                if(hint) {
+                    hint.classList.remove('fa-chevron-down');
+                    hint.classList.add('fa-chevron-up');
+                }
+            }
+        }
+
+        // Lógica do Checklist
+        function analisarSintomas() {
+            const checkboxes = document.querySelectorAll('.sintoma-check:checked');
+            let nivel = 'nenhum';
+            
+            if (checkboxes.length > 0) {
+                checkboxes.forEach(cb => {
+                    if (cb.value === 'alta') nivel = 'alta';
+                    if (cb.value === 'media' && nivel !== 'alta') nivel = 'media';
+                    if (cb.value === 'baixa' && nivel === 'nenhum') nivel = 'baixa';
+                });
+            }
+
+            mostrarResultado(nivel);
+        }
+
+        // Exibição do Modal Customizado
+        function mostrarResultado(nivel) {
+            const modal = document.getElementById('custom-modal');
+            const icon = document.getElementById('modal-icon');
+            const title = document.getElementById('modal-title');
+            const msg = document.getElementById('modal-msg');
+
+            icon.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner';
+
+            if (nivel === 'alta') {
+                icon.classList.add('bg-red-100', 'text-emergency-red');
+                icon.innerHTML = '<i class="fa-solid fa-truck-medical animate-bounce"></i>';
+                title.textContent = 'Emergência Odontológica!';
+                title.className = 'text-2xl font-bold mb-2 text-emergency-red';
+                msg.innerHTML = 'Você marcou sintomas de alto risco. <strong>Procure um dentista ou pronto-socorro odontológico IMEDIATAMENTE.</strong> Não deixe para amanhã!';
+            } else if (nivel === 'media') {
+                icon.classList.add('bg-orange-100', 'text-orange-500');
+                icon.innerHTML = '<i class="fa-solid fa-clock"></i>';
+                title.textContent = 'Atenção Necessária';
+                title.className = 'text-2xl font-bold mb-2 text-orange-600';
+                msg.innerHTML = 'Sinais de alerta detectados. Agende uma consulta com seu dentista <strong>o mais breve possível (ainda hoje ou amanhã)</strong> para avaliação clínica e radiográfica.';
+            } else if (nivel === 'baixa') {
+                icon.classList.add('bg-yellow-100', 'text-yellow-600');
+                icon.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
+                title.textContent = 'Observação';
+                title.className = 'text-2xl font-bold mb-2 text-yellow-600';
+                msg.innerHTML = 'O sintoma é leve, mas em casos de trauma é sempre bom <strong>agendar uma avaliação de rotina</strong> com o dentista para garantir que a raiz está saudável.';
+            } else {
+                icon.classList.add('bg-green-100', 'text-green-500');
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                title.textContent = 'Aparentemente Estável';
+                title.className = 'text-2xl font-bold mb-2 text-green-600';
+                msg.innerHTML = 'Você não marcou sinais de alerta graves. Ainda assim, se houve pancada, evite alimentos duros e <strong>mantenha observação nos próximos dias.</strong> Na dúvida, consulte o dentista.';
+            }
+
+            modal.classList.add('show');
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('custom-modal');
+            modal.classList.remove('show');
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('custom-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                fecharModal();
+            }
+        });
+    </script>
+</body>
+</html>
