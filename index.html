@@ -1,622 +1,387 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOS Dentário - Protocolo de Traumatismo</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome para Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        'dental-blue': '#0077b6',
-                        'dental-light': '#caf0f8',
-                        'emergency-red': '#e63946',
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>Protocolo de Trauma | Equipe Trauma</title>
+    <!-- Fonte Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        .step-content {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .step-content.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .lux-card {
-            transition: all 0.3s ease;
-        }
-        .lux-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        /* VARIÁVEIS DE CORES - TEMA DARK MÉDICO */
+        :root {
+            --bg-dark: #0f172a; /* Fundo principal */
+            --bg-card: #1e293b; /* Fundo dos cards */
+            --primary: #38bdf8; /* Azul claro / Médico */
+            --secondary: #0284c7; /* Azul escuro */
+            --danger: #ef4444; /* Vermelho alerta */
+            --danger-glow: rgba(239, 68, 68, 0.4);
+            --text-main: #f8fafc; /* Texto principal */
+            --text-muted: #94a3b8; /* Texto secundário */
+            --glass: rgba(30, 41, 59, 0.85); /* Efeito vidro */
         }
 
-        /* Modal Overlay */
-        #custom-modal {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.7; overflow-x: hidden; }
+
+        /* BARRA DE PROGRESSO DE LEITURA */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 4px; background: var(--primary); z-index: 1000; width: 0%; transition: width 0.2s ease; box-shadow: 0 0 10px var(--primary); }
+
+        /* NAVEGAÇÃO */
+        nav { position: fixed; top: 0; width: 100%; background: var(--glass); backdrop-filter: blur(10px); display: flex; justify-content: center; padding: 15px; z-index: 999; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+        nav a { color: var(--text-main); text-decoration: none; padding: 8px 20px; font-weight: 600; font-size: 0.9em; transition: 0.3s; margin: 5px; border-radius: 30px; border: 1px solid transparent; }
+        nav a:hover { border-color: var(--primary); color: var(--primary); background: rgba(56, 189, 248, 0.1); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+
+        /* HERO SECTION (CABEÇALHO) */
+        header { 
+            height: 100vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), var(--bg-dark)), url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            padding: 20px;
         }
-        #custom-modal.show {
-            display: flex;
-            opacity: 1;
-        }
+        header h1 { font-size: 4em; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-shadow: 0 0 20px var(--primary); margin-bottom: 20px; animation: fadeInDown 1s ease; }
+        header p { font-size: 1.3em; color: var(--text-muted); max-width: 800px; margin-bottom: 30px; animation: fadeInUp 1s ease 0.3s both; }
+        .credits-badge { background: linear-gradient(45deg, var(--danger), #f43f5e); color: white; padding: 10px 25px; border-radius: 50px; font-size: 1.1em; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 20px var(--danger-glow); animation: pulse 2s infinite; }
+
+        /* CONTAINERS E ANIMAÇÕES DE SCROLL */
+        .container { max-width: 1200px; margin: 80px auto; padding: 0 20px; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .section-title { font-size: 2.5em; margin-bottom: 40px; border-left: 5px solid var(--primary); padding-left: 15px; display: inline-block; }
+        .section-title span { color: var(--primary); }
+
+        /* GRIDS E CARDS */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+        .card { background: var(--bg-card); border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); border-color: rgba(56, 189, 248, 0.3); }
+        .card-alert { border-top: 4px solid var(--danger); }
+        .card-alert h3 { color: var(--danger); }
+        .card h3 { font-size: 1.5em; margin-bottom: 15px; color: var(--primary); }
+        .card ul, .card ol { padding-left: 20px; margin-bottom: 15px; }
+        .card li { margin-bottom: 10px; }
+
+        /* IMAGENS E ANIMAÇÕES (SUBSTITUINDO OS ESPAÇOS EM BRANCO) */
+        .visual-box { width: 100%; height: 250px; background: #111827; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-top: 20px; overflow: hidden; position: relative; border: 1px solid #334155; }
+        .visual-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.3s; }
+        .visual-box:hover img { opacity: 1; transform: scale(1.05); transition: 0.5s; }
+        
+        /* DESENHO DO DENTE (SVG ANIMADO) */
+        .tooth-svg { width: 120px; height: 180px; overflow: visible; }
+        .gum { fill: #be185d; }
+        .tooth { fill: #f8fafc; transition: all 0.3s ease; }
+        
+        /* Animações dos traumas */
+        .anim-avulsao .tooth { animation: avulsao 3s infinite ease-in-out; }
+        .anim-concussao .tooth { animation: pulse-red 2s infinite; }
+        .anim-subluxacao .tooth { animation: shake 0.5s infinite; transform-origin: center; }
+        .anim-extrusiva .tooth { animation: extrusao 2s infinite alternate ease-in-out; }
+        .anim-lateral .tooth { animation: lateral 2s infinite alternate ease-in-out; transform-origin: bottom center; }
+        .anim-intrusiva .tooth { animation: intrusao 2s infinite alternate ease-in-out; }
+
+        @keyframes avulsao { 0% { transform: translateY(0); } 40% { transform: translateY(-80px) rotate(20deg); } 60% { transform: translateY(-80px) rotate(20deg); } 100% { transform: translateY(0); } }
+        @keyframes pulse-red { 0% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8)); } 100% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } }
+        @keyframes shake { 0% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-2deg); } 50% { transform: translateX(2px) rotate(2deg); } 75% { transform: translateX(-2px) rotate(-2deg); } 100% { transform: translateX(0) rotate(0); } }
+        @keyframes extrusao { 0% { transform: translateY(0); } 100% { transform: translateY(20px); } }
+        @keyframes lateral { 0% { transform: rotate(0); } 100% { transform: rotate(15deg); } }
+        @keyframes intrusao { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); } }
+
+        /* SISTEMA DE ABAS MODERNO */
+        .tabs-container { display: flex; flex-direction: column; gap: 20px; }
+        @media (min-width: 768px) { .tabs-container { flex-direction: row; } }
+        .tab-menu { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .tab-btn { background: var(--bg-card); color: var(--text-main); border: 1px solid #334155; padding: 15px 20px; border-radius: 10px; cursor: pointer; text-align: left; font-size: 1.1em; font-weight: 600; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .tab-btn:hover { background: #334155; transform: translateX(10px); }
+        .tab-btn.active { background: var(--primary); color: var(--bg-dark); border-color: var(--primary); box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4); transform: translateX(10px); }
+        .tab-content-area { flex: 2; background: var(--bg-card); border-radius: 15px; padding: 30px; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.3); min-height: 400px; display: flex; flex-direction: column; }
+        .tab-pane { display: none; animation: fadeIn 0.5s ease; }
+        .tab-pane.active { display: block; }
+        .badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
+        .badge-vermelho { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-azul { background: rgba(56, 189, 248, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+
+        /* ACORDEÃO (PERGUNTAS) */
+        .accordion { background: var(--bg-card); color: var(--text-main); cursor: pointer; padding: 20px; width: 100%; border: 1px solid #334155; text-align: left; outline: none; font-size: 1.2em; font-weight: 600; transition: 0.4s; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .accordion:hover, .accordion.active-acc { background: #334155; border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .accordion::after { content: '+'; font-size: 1.5em; color: var(--primary); font-weight: 300; transition: 0.3s; }
+        .accordion.active-acc::after { content: "−"; transform: rotate(180deg); color: var(--danger); }
+        .panel { padding: 0 20px; background: rgba(30, 41, 59, 0.5); border-left: 2px solid var(--primary); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-radius: 0 0 10px 10px; margin-top: -10px; margin-bottom: 15px; }
+        .panel-content { padding: 20px 0; color: var(--text-muted); font-size: 1.1em; }
+
+        /* FOOTER */
+        footer { background: #020617; text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid #1e293b; }
+        footer p { color: var(--text-muted); }
+        .footer-brand { font-size: 1.5em; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
+
+        /* KEYFRAMES GERAIS */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--danger-glow); } 70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased font-sans flex flex-col min-h-screen">
+<body>
 
-    <header class="bg-emergency-red text-white py-4 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <div class="flex items-center gap-3 mb-2 md:mb-0">
-                <div class="bg-white text-emergency-red rounded-full w-10 h-10 flex items-center justify-center text-xl shadow-inner font-bold">
-                    <i class="fa-solid fa-truck-medical animate-pulse"></i>
-                </div>
-                <h1 class="text-2xl font-bold uppercase tracking-wide">Emergência Odontológica?</h1>
-            </div>
-            <div>
-                <p class="font-medium text-red-100 hidden md:block">Protocolo Rápido de Primeiros Socorros para Traumatismo Dentário</p>
-                <a href="#alerta" class="md:hidden inline-block bg-white text-emergency-red px-4 py-1 rounded-full text-sm font-bold mt-2">Ir para Checklist</a>
-            </div>
-        </div>
+    <!-- BARRA DE PROGRESSO -->
+    <div id="progress-bar"></div>
+
+    <!-- MENU -->
+    <nav>
+        <a href="#avulsao">🚑 Avulsão</a>
+        <a href="#luxacao">🔍 Luxações (Raio-X)</a>
+        <a href="#comunicacao">💬 Orientação ao Paciente</a>
+        <a href="#ajuda">📍 SOS Jequié</a>
+    </nav>
+
+    <!-- HEADER -->
+    <header id="topo">
+        <h1>Protocolo de Trauma Dentário</h1>
+        <p>Um guia visual, interativo e direto ao ponto para o manejo clínico e orientação de pacientes frente a emergências odontológicas.</p>
+        <div class="credits-badge">Feito por Equipe Trauma (By Tinho)</div>
     </header>
 
-    <section class="container mx-auto px-4 py-12 lg:py-20">
-        <div class="flex flex-col lg:flex-row items-center gap-10">
-            <div class="lg:w-1/2 space-y-6">
-                <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-dental-blue font-semibold text-sm uppercase tracking-wider mb-2">Mantenha a calma</span>
-                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">O que é o <span class="text-dental-blue">Traumatismo Dentário?</span></h2>
-                <p class="text-lg text-slate-600 leading-relaxed">
-                    Bateu a boca? Caiu? O traumatismo dentário é qualquer lesão nos dentes, gengivas ou ossos da face devido a impactos. 
-                    A rapidez com que você age nos primeiros minutos pode <strong>salvar o seu dente</strong>.
-                </p>
-                <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="#avulsao" class="bg-dental-blue hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-tooth"></i> Meu dente caiu inteiro
-                    </a>
-                    <a href="#luxacao" class="bg-white border-2 border-slate-200 hover:border-dental-blue text-slate-700 px-6 py-3 rounded-xl font-semibold shadow-sm transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-arrows-up-down-left-right"></i> Meu dente entortou/amoleceu
-                    </a>
-                </div>
-            </div>
-            <div class="lg:w-1/2 w-full">
-                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dentista examinando paciente" class="rounded-2xl shadow-2xl object-cover h-[400px] w-full border-4 border-white">
-            </div>
-        </div>
-    </section>
-
-    <section id="avulsao" class="bg-dental-light py-16">
-        <div class="container mx-auto px-4">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-3">
-                    <span class="bg-emergency-red text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-tooth"></i></span>
-                    Avulsão Dentária
-                </h2>
-                <p class="text-lg text-slate-700">O dente caiu inteiro (com a raiz)? O tempo é seu maior inimigo. <strong>Você tem cerca de 60 minutos!</strong> Siga os passos abaixo imediatamente:</p>
-            </div>
-
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden max-w-5xl mx-auto flex flex-col md:flex-row">
-                
-                <!-- Navegação do Stepper -->
-                <div class="md:w-1/3 bg-slate-50 border-r border-slate-100 p-6">
-                    <ul class="space-y-4 relative" id="stepper-nav">
-                        <div class="absolute left-6 top-10 bottom-10 w-0.5 bg-slate-200 z-0 hidden md:block"></div>
-                        
-                        <li class="relative z-10">
-                            <button onclick="changeStep(1)" class="step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-blue-50 border border-dental-blue text-dental-blue font-bold">
-                                <span class="w-8 h-8 rounded-full bg-dental-blue text-white flex items-center justify-center font-bold shadow-md shrink-0">1</span>
-                                Encontrar
-                            </button>
-                        </li>
-                        <li class="relative z-10">
-                            <button onclick="changeStep(2)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
-                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">2</span>
-                                Como Segurar
-                            </button>
-                        </li>
-                        <li class="relative z-10">
-                            <button onclick="changeStep(3)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
-                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">3</span>
-                                Lavar
-                            </button>
-                        </li>
-                        <li class="relative z-10">
-                            <button onclick="changeStep(4)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
-                                <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0">4</span>
-                                Armazenar
-                            </button>
-                        </li>
-                        <li class="relative z-10">
-                            <button onclick="changeStep(5)" class="step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer">
-                                <span class="w-8 h-8 rounded-full bg-emergency-red text-white flex items-center justify-center font-bold shrink-0 shadow-md">5</span>
-                                <span class="text-emergency-red font-bold">Dentista Já!</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="md:w-2/3 p-8 md:p-12 relative flex items-center">
-                    <!-- Passo 1 -->
-                    <div id="step-1" class="step-content active w-full text-center md:text-left">
-                        <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Procurando" class="w-full h-48 object-cover rounded-xl mb-6 shadow-sm">
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4"><i class="fa-solid fa-magnifying-glass text-dental-blue mr-2"></i> 1. Encontre o dente imediatamente</h3>
-                        <p class="text-slate-600 text-lg mb-6">Mantenha a calma do paciente e procure o dente que caiu. É fundamental recuperá-lo o mais rápido possível para aumentar as chances de reimplante.</p>
-                        <button onclick="changeStep(2)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                    </div>
-
-                    <!-- Passo 2 -->
-                    <div id="step-2" class="step-content w-full text-center md:text-left">
-                        <i class="fa-solid fa-hand-holding text-5xl text-dental-blue mb-6"></i>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">2. Segure apenas pela coroa</h3>
-                        <p class="text-slate-600 text-lg mb-6">
-                            <strong>NUNCA</strong> toque na raiz do dente (a parte amarelada e pontuda que fica dentro da gengiva). Segure sempre pela <strong>coroa</strong> (a parte branca que usamos para mastigar). Tocar na raiz destrói células vitais para o dente "colar" novamente.
-                        </p>
-                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                            <button onclick="changeStep(1)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
-                            <button onclick="changeStep(3)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Passo 3 -->
-                    <div id="step-3" class="step-content w-full text-center md:text-left">
-                        <i class="fa-solid fa-faucet-drip text-5xl text-dental-blue mb-6"></i>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">3. Lave delicadamente (se estiver sujo)</h3>
-                        <p class="text-slate-600 text-lg mb-6">
-                            Se o dente caiu na terra ou está sujo, lave-o com soro fisiológico, leite ou água fria corrente por <strong>no máximo 10 segundos</strong>.
-                            <br><br>
-                            <span class="text-emergency-red font-bold"><i class="fa-solid fa-ban"></i> Não esfregue, não use sabão e não seque com toalha!</span>
-                        </p>
-                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                            <button onclick="changeStep(2)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
-                            <button onclick="changeStep(4)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Passo 4 -->
-                    <div id="step-4" class="step-content w-full text-center md:text-left">
-                        <i class="fa-solid fa-glass-water text-5xl text-dental-blue mb-6"></i>
-                        <h3 class="text-2xl font-bold text-slate-800 mb-4">4. Recoloque ou Armazene corretamente</h3>
-                        <div class="bg-blue-50 border-l-4 border-dental-blue p-4 rounded-r-lg mb-6 text-left">
-                            <p class="font-bold text-slate-800 mb-2">Opção A: Recolocar (O Ideal)</p>
-                            <p class="text-slate-600 mb-4 text-sm">Se o paciente for adulto/adolescente cooperativo, tente colocar o dente de volta no buraco da gengiva e peça para morder um lenço de papel para segurar.</p>
-                            
-                            <p class="font-bold text-slate-800 mb-2">Opção B: Armazenar (Se não der pra recolocar)</p>
-                            <p class="text-slate-600 text-sm">Coloque o dente imerso em <strong>Leite frio</strong>, Soro Fisiológico ou saliva (no potinho, ou dentro da bochecha do paciente se ele não for engolir). <strong class="text-red-500">Nunca armazene em água pura!</strong></p>
-                        </div>
-                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                            <button onclick="changeStep(3)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
-                            <button onclick="changeStep(5)" class="bg-dental-blue text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">Próximo Passo <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Passo 5 -->
-                    <div id="step-5" class="step-content w-full text-center md:text-left">
-                        <div class="inline-block p-4 bg-red-100 rounded-full mb-6">
-                            <i class="fa-solid fa-hospital text-5xl text-emergency-red"></i>
-                        </div>
-                        <h3 class="text-3xl font-extrabold text-emergency-red mb-4">5. Corra para o Dentista!</h3>
-                        <p class="text-slate-700 text-lg mb-6">
-                            Cada minuto conta! As maiores taxas de sucesso ocorrem quando o dente é reimplantado em <strong>menos de 30 a 60 minutos</strong> após a queda. Ligue para a clínica no caminho para que a equipe prepare o atendimento de emergência.
-                        </p>
-                        <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                            <button onclick="changeStep(4)" class="bg-slate-200 text-slate-700 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Voltar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="luxacao" class="container mx-auto px-4 py-16">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">
-                Luxação Dentária
-            </h2>
-            <p class="text-lg text-slate-600">O dente bateu, não caiu inteiro, mas sofreu danos. Pode estar mole, torto, afundado ou alongado. Conheça os tipos e o que fazer:</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Card Concussão -->
-            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-concussao', this)">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-dental-blue text-2xl">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold uppercase">Leve</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Concussão</h3>
-                <p class="text-slate-600 text-sm mb-4">O dente sofreu uma pancada, não está mole e não saiu do lugar, mas <strong>dói muito ao toque ou mastigação</strong>.</p>
-                <div id="det-concussao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
-                    <strong>O que fazer:</strong> Dieta macia/pastosa, evite morder com o dente afetado. Procure o dentista para acompanhamento (risco do canal necrozar no futuro).
-                </div>
-                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
-            </div>
-
-            <!-- Card Subluxação -->
-            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-subluxacao', this)">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center text-dental-blue text-2xl">
-                        <i class="fa-solid fa-arrows-left-right"></i>
-                    </div>
-                    <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded font-bold uppercase">Atenção</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Subluxação</h3>
-                <p class="text-slate-600 text-sm mb-4">Houve impacto. O dente está <strong>um pouco mole</strong> e sangra um pouco na gengiva, mas não mudou de posição.</p>
-                <div id="det-subluxacao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
-                    <strong>O que fazer:</strong> Não fique testando a mobilidade com a língua ou dedo! Dieta líquida/pastosa. Agende com o dentista, ele pode precisar imobilizar o dente (contenção).
-                </div>
-                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
-            </div>
-
-            <!-- Card Luxação Lateral -->
-            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-lateral', this)">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
-                        <i class="fa-solid fa-arrow-turn-up" style="transform: rotate(45deg);"></i>
-                    </div>
-                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Urgente</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Luxação Lateral</h3>
-                <p class="text-slate-600 text-sm mb-4">O dente <strong>entortou</strong> (para frente, trás ou lados) rompendo o osso ao redor. Fica travado na nova posição e dói muito.</p>
-                <div id="det-lateral" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
-                    <strong>O que fazer:</strong> Não tente desentortar em casa! Vá ao dentista imediatamente. O profissional usará anestesia para reposicionar e imobilizar o dente.
-                </div>
-                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
+    <!-- SEÇÃO: AVULSÃO -->
+    <section id="avulsao" class="container fade-in">
+        <h2 class="section-title">🚨 Avulsão <span>Dentária</span></h2>
+        
+        <div class="grid-2">
+            <div class="card card-alert">
+                <h3>Ação Imediata</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">O dente foi totalmente deslocado. O tempo extra-alveolar define o sucesso.</p>
+                <ul>
+                    <li>Pegue <strong>SEMPRE pela coroa</strong>.</li>
+                    <li>Se sujo, lave com soro por no máx. 10s.</li>
+                    <li><strong>Reimplante no local imediatamente.</strong></li>
+                    <li>Se impossível, armazene em <strong>leite, soro ou saliva</strong>.</li>
+                </ul>
             </div>
             
-            <!-- Card Intrusão -->
-            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-intrusao', this)">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
-                        <i class="fa-solid fa-arrow-down"></i>
-                    </div>
-                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Grave</span>
+            <div class="card">
+                <h3>Animação: Reimplante Correto</h3>
+                <div class="visual-box anim-avulsao">
+                    <!-- SVG ANIMADO DO DENTE (Não quebra e ilustra perfeitamente) -->
+                    <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                        <path class="gum" d="M 0 120 Q 50 140 100 120 L 100 180 L 0 180 Z" />
+                        <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        <path fill="#0f172a" d="M 40 130 C 45 150 55 150 60 130 Z"/> <!-- Detalhe da raiz -->
+                    </svg>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Intrusão</h3>
-                <p class="text-slate-600 text-sm mb-4">O dente <strong>afundou</strong> para dentro da gengiva/osso. Em casos severos, pode parecer que o dente sumiu.</p>
-                <div id="det-intrusao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
-                    <strong>O que fazer:</strong> É o trauma mais severo (exceto avulsão). Requer radiografia imediata. O dentista decidirá se aguarda o dente re-erupcionar ou se faz tração ortodôntica/cirúrgica.
-                </div>
-                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
-            </div>
-
-            <!-- Card Extrusão -->
-            <div class="lux-card bg-white rounded-2xl p-6 border border-slate-100 cursor-pointer" onclick="toggleDetails('det-extrusao', this)">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-emergency-red text-2xl">
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </div>
-                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold uppercase">Urgente</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Extrusão</h3>
-                <p class="text-slate-600 text-sm mb-4">O dente <strong>"cresceu"</strong>, ou seja, saiu parcialmente do alvéolo, mas não caiu totalmente. Fica bastante solto e alongado.</p>
-                <div id="det-extrusao" class="hidden border-t border-slate-100 pt-4 mt-4 text-sm text-slate-700">
-                    <strong>O que fazer:</strong> Vá ao dentista em até 3 horas se possível. O profissional irá reposicioná-lo delicadamente na altura correta e aplicar uma contenção.
-                </div>
-                <p class="text-dental-blue text-sm font-semibold mt-2 click-hint"><i class="fa-solid fa-chevron-down mr-1"></i> Clique para saber o que fazer</p>
-            </div>
-
-            <!-- Preenchimento grid -->
-            <div class="lux-card bg-slate-800 text-white rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-lg">
-                <i class="fa-solid fa-user-doctor text-4xl mb-4 text-blue-300"></i>
-                <h3 class="text-xl font-bold mb-2">Dica de Ouro</h3>
-                <p class="text-sm text-slate-300">Em TODOS os casos de luxação, evite morder alimentos duros nas próximas semanas e capriche na higiene para evitar infecções.</p>
+                <p style="text-align: center; margin-top: 10px; font-size: 0.9em; color: var(--text-muted);">Demonstração da recolocação no alvéolo.</p>
             </div>
         </div>
     </section>
 
-    <section id="alerta" class="bg-slate-100 py-16">
-        <div class="container mx-auto px-4 max-w-2xl">
-            <div class="bg-white rounded-3xl p-8 shadow-xl">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2 text-center">
-                    <i class="fa-solid fa-clipboard-list text-dental-blue mr-2"></i> Checklist Pós-Trauma
-                </h2>
-                <p class="text-slate-600 text-center mb-8">Marque os sintomas que o paciente está sentindo agora para avaliarmos a urgência.</p>
-                
-                <form id="checklist-form" class="space-y-4">
-                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
-                        <span class="ml-3 text-slate-700 font-medium">Sangramento na boca que não para.</span>
-                    </label>
-
-                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="media">
-                        <span class="ml-3 text-slate-700 font-medium">O dente mudou de cor (ficou escuro/acinzentado).</span>
-                    </label>
-
-                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
-                        <span class="ml-3 text-slate-700 font-medium">O paciente não consegue fechar a boca normalmente (dentes não encaixam).</span>
-                    </label>
-
-                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="alta">
-                        <span class="ml-3 text-slate-700 font-medium">Inchaço acentuado no rosto ou lábios.</span>
-                    </label>
-
-                    <label class="flex items-center p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                        <input type="checkbox" class="sintoma-check w-5 h-5 text-emergency-red rounded border-slate-300 focus:ring-emergency-red" value="baixa">
-                        <span class="ml-3 text-slate-700 font-medium">Pequena sensibilidade ao beber água gelada.</span>
-                    </label>
-
-                    <button type="button" onclick="analisarSintomas()" class="w-full mt-6 bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-stethoscope"></i> Analisar Sintomas
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <section id="ajuda-jequie" class="bg-white py-16 border-t border-slate-200">
-        <div class="container mx-auto px-4 max-w-6xl">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4 flex items-center justify-center gap-3">
-                    <span class="bg-dental-blue text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-map-location-dot"></i></span>
-                    Onde buscar ajuda em Jequié - BA
-                </h2>
-                <p class="text-lg text-slate-600">Em caso de trauma, procure atendimento especializado imediatamente. Veja abaixo algumas opções na cidade.</p>
+    <!-- SEÇÃO: LUXAÇÕES (INTERATIVA) -->
+    <section id="luxacao" class="container fade-in">
+        <h2 class="section-title">🔍 Tipos de <span>Luxações</span></h2>
+        
+        <div class="tabs-container">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="openTab(event, 'concussao')">Concussão <span>›</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'subluxacao')">Subluxação <span>›</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'extrusiva')">Luxação Extrusiva <span>›</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'lateral')">Luxação Lateral <span>›</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'intrusiva')">Luxação Intrusiva <span>›</span></button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- UPA -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-3 mb-4 border-b border-slate-200 pb-3">
-                        <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-truck-medical text-emergency-red text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800">UPA 24h</h3>
+            <div class="tab-content-area">
+                <!-- CONCUSSÃO -->
+                <div id="concussao" class="tab-pane active">
+                    <span class="badge badge-azul">Baixa Gravidade</span>
+                    <h3 style="color: var(--primary); font-size: 1.8em;">Concussão</h3>
+                    <p>O dente sofreu impacto, não saiu do lugar e não tem mobilidade. Apresenta alta sensibilidade (dor) à percussão.</p>
+                    <div class="visual-box anim-concussao">
+                        <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                            <path class="gum" d="M 0 120 Q 50 140 100 120 L 100 180 L 0 180 Z" />
+                            <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        </svg>
                     </div>
-                    <ul class="space-y-4">
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">UPA Jequié</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1">
-                                <i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> Av. Lomanto Jr., S/N - Cansanção, Jequié - BA
-                            </span>
-                        </li>
-                    </ul>
-                    <div class="mt-6 text-xs text-emergency-red font-semibold bg-red-50 p-3 rounded-lg border border-red-100">
-                        * Ideal para traumas severos associados a acidentes maiores (batidas de carro, quedas fortes) ou fora do horário comercial das clínicas.
-                    </div>
+                    <p style="margin-top: 15px;"><strong>Conduta:</strong> Alívio oclusal e dieta pastosa. Acompanhamento clínico e radiográfico.</p>
                 </div>
 
-                <!-- UBS -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-3 mb-4 border-b border-slate-200 pb-3">
-                        <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-house-medical text-dental-blue text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800">Unidades Básicas (UBS)</h3>
+                <!-- SUBLUXAÇÃO -->
+                <div id="subluxacao" class="tab-pane">
+                    <span class="badge badge-azul">Média Gravidade</span>
+                    <h3 style="color: var(--primary); font-size: 1.8em;">Subluxação</h3>
+                    <p>Aumento de mobilidade sem deslocamento. Há rompimento de algumas fibras, causando sangramento no sulco gengival.</p>
+                    <div class="visual-box anim-subluxacao">
+                        <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                            <path class="gum" d="M 0 120 Q 50 140 100 120 L 100 180 L 0 180 Z" />
+                            <path fill="#ef4444" d="M 20 125 L 80 125 L 50 140 Z"/> <!-- Sangramento simulado -->
+                            <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        </svg>
                     </div>
-                    <ul class="space-y-4">
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Posto Campo do America</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> R. Manoel Vitorino, 376-458 - Campo do América</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Centro de Saúde Júlia Magalhães</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> 472 - R. João Braga, 446 - Jequiezinho</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Centro Saude Jequie</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> 458 - R. Manoel Vitorino, 376 - Campo do América</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">USF - Amando Ribeiro Borges</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> Tv. Primeira P Lot Agua Branca, 7 - Centro</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Posto Almerinda Lomanto</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> R. Nilo Peçanha, 90 - Joaquim Romão</span>
-                        </li>
-                    </ul>
+                    <p style="margin-top: 15px;"><strong>Conduta:</strong> Contenção flexível (2 semanas) apenas se houver muita dor/mobilidade. Dieta macia.</p>
                 </div>
 
-                <!-- Clínicas Odontológicas -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition">
-                    <div class="flex items-center gap-3 mb-4 border-b border-slate-200 pb-3">
-                        <div class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-tooth text-dental-blue text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-800">Clínicas Particulares</h3>
+                <!-- EXTRUSIVA -->
+                <div id="extrusiva" class="tab-pane">
+                    <span class="badge badge-vermelho">Alta Gravidade</span>
+                    <h3 style="color: var(--primary); font-size: 1.8em;">Luxação Extrusiva</h3>
+                    <p>Deslocamento parcial do dente para fora do osso. Ele parece "mais comprido".</p>
+                    <div class="visual-box anim-extrusiva">
+                        <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                            <path class="gum" d="M 0 120 Q 50 140 100 120 L 100 180 L 0 180 Z" />
+                            <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        </svg>
                     </div>
-                    <ul class="space-y-4">
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">OdontoVida</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> R. Álvares Cabral, 8 - Centro</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">CTO Clínica Odontológica</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> R. Virgilio Tourinho, 15 - Centro</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Vamos Sorrir Jequié</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> R. Félix Gáspar, 50 - Centro</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Odonto Jequié</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> Edifício Vitória Center - Av. Rio Branco, 643, térreo, sala 03 - Centro</span>
-                        </li>
-                        <li class="text-sm">
-                            <span class="font-bold text-slate-700 block">Clínica Inovv</span>
-                            <span class="text-slate-600 flex items-start mt-1 gap-1"><i class="fa-solid fa-location-dot text-dental-blue mt-0.5"></i> Av. Rio Branco, 666 - 1° andar - Centro</span>
-                        </li>
-                    </ul>
+                    <p style="margin-top: 15px;"><strong>Conduta:</strong> Reposicionamento suave. Contenção flexível (2 semanas). Endodontia provável em ápice fechado.</p>
+                </div>
+
+                <!-- LATERAL -->
+                <div id="lateral" class="tab-pane">
+                    <span class="badge badge-vermelho">Alta Gravidade</span>
+                    <h3 style="color: var(--primary); font-size: 1.8em;">Luxação Lateral</h3>
+                    <p>Deslocamento do dente para frente ou para trás. Fica travado no osso e imóvel (som metálico).</p>
+                    <div class="visual-box anim-lateral">
+                        <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                            <path class="gum" d="M 0 120 Q 50 140 100 120 L 100 180 L 0 180 Z" />
+                            <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        </svg>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Conduta:</strong> Anestesia, desengajamento puxando levemente, e reposicionamento. Contenção (4 semanas).</p>
+                </div>
+
+                <!-- INTRUSIVA -->
+                <div id="intrusiva" class="tab-pane">
+                    <span class="badge badge-vermelho">Emergência Crítica</span>
+                    <h3 style="color: var(--primary); font-size: 1.8em;">Luxação Intrusiva</h3>
+                    <p>O dente afunda para dentro do osso. Muitas vezes o paciente acha que o dente "caiu".</p>
+                    <div class="visual-box anim-intrusiva">
+                        <svg class="tooth-svg" viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg">
+                            <path class="gum" d="M 0 100 Q 50 120 100 100 L 100 180 L 0 180 Z" />
+                            <path class="tooth" d="M 30 130 C 30 130 20 80 25 30 C 35 10 65 10 75 30 C 80 80 70 130 70 130 C 60 160 40 160 30 130 Z" />
+                        </svg>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Conduta:</strong> Ápice aberto: aguardar reerupção. Ápice fechado: Tracionamento ortodôntico/cirúrgico. Endodontia obrigatória rápida.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-auto">
-        <div class="container mx-auto px-4">
-            <p class="mb-2"><i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2"></i><strong>Aviso:</strong> Este guia é informativo e não substitui a avaliação clínica de um Cirurgião-Dentista.</p>
-            <p class="text-sm">Em caso de acidente de trânsito ou pancadas fortes na cabeça, desmaios, náuseas ou perda de memória, procure primeiro um <strong>Pronto-Socorro Médico (Hospital)</strong>.</p>
-            
-            <div class="mt-8 pt-6 border-t border-slate-800">
-                <p class="font-bold text-slate-200 text-lg">Feito por Equipe Trauma (By Tinho)</p>
+    <!-- SEÇÃO: COMUNICAÇÃO -->
+    <section id="comunicacao" class="container fade-in">
+        <h2 class="section-title">💬 Comunicação com o <span>Paciente</span></h2>
+        
+        <div class="grid-2">
+            <div>
+                <button class="accordion">O que aconteceu com meu dente?</button>
+                <div class="panel"><div class="panel-content">Com a força da pancada, seu dente pode ter saído do lugar, afundado ou caído inteiro. É uma emergência, mas na grande maioria dos casos tem conserto se você agir rápido.</div></div>
+
+                <button class="accordion">O que devo fazer IMEDIATAMENTE?</button>
+                <div class="panel"><div class="panel-content">
+                    1. Mantenha a calma e lave a boca.<br>
+                    2. Se o dente caiu, pegue-o <strong>só pela parte branca</strong> (nunca pela raiz pontiaguda).<br>
+                    3. Se estiver sujo, passe uma água muito rápido (menos de 10s).<br>
+                    4. Coloque o dente dentro de um copo com <strong>LEITE, SORO FISIOLÓGICO ou na própria SALIVA</strong>.<br>
+                    5. Corra para o dentista!
+                </div></div>
+            </div>
+            <div>
+                <button class="accordion">O que eu NÃO devo fazer?</button>
+                <div class="panel"><div class="panel-content">
+                    ❌ <strong>NÃO</strong> esfregue a raiz do dente com bucha ou escova.<br>
+                    ❌ <strong>NÃO</strong> guarde o dente em papel, guardanapo seco ou pano.<br>
+                    ❌ <strong>NÃO</strong> coloque em água da torneira ou álcool.<br>
+                    ❌ <strong>NÃO</strong> tente colocar dente de leite de volta no buraco (prejudica o permanente).
+                </div></div>
+
+                <button class="accordion">Quais os cuidados APÓS o tratamento?</button>
+                <div class="panel"><div class="panel-content">
+                    ✔️ <strong>Comida:</strong> Somente coisas pastosas, líquidas e frias por 7 a 10 dias. Não morda nada.<br>
+                    ✔️ <strong>Higiene:</strong> Escova extra-macia na região, com muita delicadeza.<br>
+                    ✔️ <strong>Retorno:</strong> Volte às consultas marcadas! O dente precisa de radiografias nos meses seguintes para garantir que a raiz está viva.
+                </div></div>
             </div>
         </div>
+    </section>
+
+    <!-- SEÇÃO: AJUDA EM JEQUIÉ -->
+    <section id="ajuda" class="container fade-in" style="margin-bottom: 100px;">
+        <h2 class="section-title">📍 SOS <span>Jequié-BA</span></h2>
+        
+        <!-- Imagem de Clínica Real (Unsplash Medical) -->
+        <div class="visual-box" style="height: 300px; margin-bottom: 30px; border: none;">
+            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hospital">
+        </div>
+
+        <div class="grid-2">
+            <div class="card card-alert">
+                <h3>🏥 UPA e Postos de Saúde (SUS)</h3>
+                <p style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 15px;">Vá à UPA se o trauma envolveu cortes profundos no rosto ou perda de consciência.</p>
+                <ul>
+                    <li><strong>UPA Eunice Jesus Leal Almeida</strong><br><span style="color:var(--text-muted)">Av. Gov. Lomanto Junior, s/n - Cansanção.</span></li>
+                    <li><strong>UBS Almerinda Lomanto</strong><br><span style="color:var(--text-muted)">Praça Papa João XXIII - Joaquim Romão.</span></li>
+                    <li><strong>UBS de Jequié</strong><br><span style="color:var(--text-muted)">Rua Apolinário Peleteiro - Campo do América.</span></li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--primary);">
+                <h3>🦷 Clínicas Odontológicas Locais</h3>
+                <p style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 15px;">Para protocolo completo de fixação, estética e endodontia especializada.</p>
+                <ul>
+                    <li><strong>Clidont Clínica Odontológica</strong><br><span style="color:var(--text-muted)">Rua Sete de Setembro, 26 - Centro.</span></li>
+                    <li><strong>Odonto Jequié</strong><br><span style="color:var(--text-muted)">Av. Rio Branco, 643 (Edifício Vitória Center), Térreo, Sala 03 - Centro.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-brand">Equipe Trauma</div>
+        <p>Protocolo Clínico Oficial (By Tinho)</p>
+        <p style="font-size: 0.8em; margin-top: 10px;">Desenvolvido para educação em saúde e auxílio emergencial em Jequié, BA.</p>
     </footer>
 
-    <!-- Custom Modal de Alerta (Substitui o alert() nativo) -->
-    <div id="custom-modal" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl transform transition-all text-center relative" id="modal-content">
-            <button onclick="fecharModal()" class="absolute top-4 right-5 text-slate-400 hover:text-slate-700 text-2xl font-bold">&times;</button>
-            
-            <div id="modal-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4">
-                <!-- Ícone injetado por JS -->
-            </div>
-            
-            <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
-            <p id="modal-msg" class="text-slate-600 mb-6"></p>
-            
-            <button onclick="fecharModal()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition">Entendido</button>
-        </div>
-    </div>
-
+    <!-- SCRIPTS -->
     <script>
-        // Lógica do Stepper de Avulsão
-        function changeStep(stepNumber) {
-            const contents = document.querySelectorAll('.step-content');
-            contents.forEach(content => content.classList.remove('active'));
+        // BARRA DE PROGRESSO NO SCROLL
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        // EFEITO FADE-IN NOS ELEMENTOS AO ROLAR A PÁGINA
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // SISTEMA DE ABAS (LUXAÇÕES)
+        function openTab(evt, tabId) {
+            const panes = document.querySelectorAll('.tab-pane');
+            const btns = document.querySelectorAll('.tab-btn');
             
-            document.getElementById(`step-${stepNumber}`).classList.add('active');
+            panes.forEach(pane => pane.classList.remove('active'));
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
 
-            const buttons = document.querySelectorAll('.step-btn');
-            buttons.forEach((btn, index) => {
-                const btnStep = index + 1;
-                const numberCircle = btn.querySelector('span');
-
-                if(btnStep === stepNumber) {
-                    btn.className = 'step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-blue-50 border border-dental-blue text-dental-blue font-bold';
-                    numberCircle.className = 'w-8 h-8 rounded-full bg-dental-blue text-white flex items-center justify-center font-bold shadow-md shrink-0';
-                    
-                    if(stepNumber === 5) {
-                        btn.className = 'step-btn active w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all bg-red-50 border border-emergency-red text-emergency-red font-bold';
-                        numberCircle.className = 'w-8 h-8 rounded-full bg-emergency-red text-white flex items-center justify-center font-bold shadow-md shrink-0';
-                    }
+        // SISTEMA ACORDEÃO (PERGUNTAS)
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                this.classList.toggle('active-acc');
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
                 } else {
-                    btn.className = 'step-btn w-full text-left flex items-center gap-4 p-3 rounded-xl transition-all hover:bg-slate-100 text-slate-500 font-medium cursor-pointer';
-                    numberCircle.className = 'w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold shrink-0';
-                    
-                    if(btnStep === 5) {
-                        numberCircle.classList.add('text-emergency-red');
-                        numberCircle.classList.replace('bg-slate-200', 'bg-red-100');
-                    }
+                    panel.style.maxHeight = panel.scrollHeight + "px";
                 }
             });
-        }
-
-        // Lógica dos Cards de Luxação (Accordion)
-        function toggleDetails(id, cardElement) {
-            const detailDiv = document.getElementById(id);
-            const isHidden = detailDiv.classList.contains('hidden');
-            const hint = cardElement.querySelector('.click-hint i');
-            
-            document.querySelectorAll('[id^="det-"]').forEach(el => {
-                el.classList.add('hidden');
-                const parent = el.parentElement;
-                const parentHint = parent.querySelector('.click-hint i');
-                if(parentHint) {
-                    parentHint.classList.remove('fa-chevron-up');
-                    parentHint.classList.add('fa-chevron-down');
-                }
-                parent.classList.remove('ring-2', 'ring-dental-blue', 'shadow-xl');
-            });
-
-            if (isHidden) {
-                detailDiv.classList.remove('hidden');
-                cardElement.classList.add('ring-2', 'ring-dental-blue', 'shadow-xl');
-                if(hint) {
-                    hint.classList.remove('fa-chevron-down');
-                    hint.classList.add('fa-chevron-up');
-                }
-            }
-        }
-
-        // Lógica do Checklist
-        function analisarSintomas() {
-            const checkboxes = document.querySelectorAll('.sintoma-check:checked');
-            let nivel = 'nenhum';
-            
-            if (checkboxes.length > 0) {
-                checkboxes.forEach(cb => {
-                    if (cb.value === 'alta') nivel = 'alta';
-                    if (cb.value === 'media' && nivel !== 'alta') nivel = 'media';
-                    if (cb.value === 'baixa' && nivel === 'nenhum') nivel = 'baixa';
-                });
-            }
-
-            mostrarResultado(nivel);
-        }
-
-        // Exibição do Modal Customizado
-        function mostrarResultado(nivel) {
-            const modal = document.getElementById('custom-modal');
-            const icon = document.getElementById('modal-icon');
-            const title = document.getElementById('modal-title');
-            const msg = document.getElementById('modal-msg');
-
-            icon.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner';
-
-            if (nivel === 'alta') {
-                icon.classList.add('bg-red-100', 'text-emergency-red');
-                icon.innerHTML = '<i class="fa-solid fa-truck-medical animate-bounce"></i>';
-                title.textContent = 'Emergência Odontológica!';
-                title.className = 'text-2xl font-bold mb-2 text-emergency-red';
-                msg.innerHTML = 'Você marcou sintomas de alto risco. <strong>Procure um dentista ou pronto-socorro odontológico IMEDIATAMENTE.</strong> Não deixe para amanhã!';
-            } else if (nivel === 'media') {
-                icon.classList.add('bg-orange-100', 'text-orange-500');
-                icon.innerHTML = '<i class="fa-solid fa-clock"></i>';
-                title.textContent = 'Atenção Necessária';
-                title.className = 'text-2xl font-bold mb-2 text-orange-600';
-                msg.innerHTML = 'Sinais de alerta detectados. Agende uma consulta com seu dentista <strong>o mais breve possível (ainda hoje ou amanhã)</strong> para avaliação clínica e radiográfica.';
-            } else if (nivel === 'baixa') {
-                icon.classList.add('bg-yellow-100', 'text-yellow-600');
-                icon.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
-                title.textContent = 'Observação';
-                title.className = 'text-2xl font-bold mb-2 text-yellow-600';
-                msg.innerHTML = 'O sintoma é leve, mas em casos de trauma é sempre bom <strong>agendar uma avaliação de rotina</strong> com o dentista para garantir que a raiz está saudável.';
-            } else {
-                icon.classList.add('bg-green-100', 'text-green-500');
-                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-                title.textContent = 'Aparentemente Estável';
-                title.className = 'text-2xl font-bold mb-2 text-green-600';
-                msg.innerHTML = 'Você não marcou sinais de alerta graves. Ainda assim, se houve pancada, evite alimentos duros e <strong>mantenha observação nos próximos dias.</strong> Na dúvida, consulte o dentista.';
-            }
-
-            modal.classList.add('show');
-        }
-
-        function fecharModal() {
-            const modal = document.getElementById('custom-modal');
-            modal.classList.remove('show');
-        }
-
-        // Fechar modal ao clicar fora
-        document.getElementById('custom-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                fecharModal();
-            }
         });
     </script>
 </body>
