@@ -67,7 +67,7 @@
         /* SVG do Dente e Gengiva */
         .tooth-svg { width: 150px; height: 200px; overflow: visible; }
         .gum { fill: #be185d; }
-        .root { fill: #cbd5e1; } /* Cor levemente diferente para a raiz aparecer na extrusão */
+        .root { fill: #cbd5e1; } 
         .tooth { fill: #f8fafc; transition: all 0.3s ease; }
 
         /* Controladores das animações */
@@ -78,17 +78,17 @@
         .anim-lateral .tooth-group { animation: lateral 2s infinite alternate ease-in-out; transform-origin: 50% 120px; }
         .anim-intrusiva .tooth-group { animation: intrusao 2s infinite alternate ease-in-out; }
 
-        /* Keyframes Corrigidos */
+        /* Keyframes */
         @keyframes avulsao { 0% { transform: translateY(0); } 40% { transform: translateY(-100px) rotate(15deg); } 60% { transform: translateY(-100px) rotate(15deg); } 100% { transform: translateY(0); } }
         @keyframes pulse-red { 0% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8)); } 100% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } }
         @keyframes shake { 0% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-1deg); } 50% { transform: translateX(2px) rotate(1deg); } 75% { transform: translateX(-2px) rotate(-1deg); } 100% { transform: translateX(0) rotate(0); } }
         
-        /* Extrusão: Dente sai (Move para cima = -Y) */
+        /* Extrusão: Dente sai (-Y) */
         @keyframes extrusao { 0% { transform: translateY(0); } 100% { transform: translateY(-25px); } } 
         
         @keyframes lateral { 0% { transform: rotate(0); } 100% { transform: rotate(12deg); } }
         
-        /* Intrusão: Dente afunda (Move para baixo = +Y) */
+        /* Intrusão: Dente afunda (+Y) */
         @keyframes intrusao { 0% { transform: translateY(0); } 100% { transform: translateY(35px); } } 
 
         /* ABAS MODERNA */
@@ -163,12 +163,13 @@
                 <h3>Animação: Reimplante Correto</h3>
                 <div class="visual-box anim-avulsao">
                     <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
+                        <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                         <g class="tooth-group">
                             <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                             <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                         </g>
-                        <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                        <!-- Gengiva expandida para não vazar a raiz -->
+                        <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                     </svg>
                 </div>
             </div>
@@ -195,11 +196,12 @@
                     <p>O dente sofreu impacto, não saiu do lugar e não tem mobilidade. Alta sensibilidade à percussão.</p>
                     <div class="visual-box anim-concussao">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                         </svg>
                     </div>
                 </div>
@@ -211,13 +213,14 @@
                     <p>Aumento de mobilidade sem deslocamento. Sangramento no sulco gengival.</p>
                     <div class="visual-box anim-subluxacao">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                             <!-- Sangramento -->
                             <path fill="#ef4444" d="M 35 105 L 85 105 L 60 120 Z"/> 
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                         </svg>
                     </div>
                 </div>
@@ -229,12 +232,12 @@
                     <p>Deslocamento parcial do dente para fora do osso. Fica "mais comprido" e expõe levemente a raiz.</p>
                     <div class="visual-box anim-extrusiva">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
+                            <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                         </svg>
                     </div>
                 </div>
@@ -246,12 +249,12 @@
                     <p>Deslocamento para os lados. Fica travado no osso e imóvel (som metálico).</p>
                     <div class="visual-box anim-lateral">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
+                            <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                         </svg>
                     </div>
                 </div>
@@ -263,12 +266,13 @@
                     <p>O dente é empurrado para o interior do alvéolo. A coroa é invadida pela gengiva e fica encurtada.</p>
                     <div class="visual-box anim-intrusiva">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#020617" d="M 40 100 C 40 100, 35 250, 60 250 C 85 250, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <!-- Gengiva (Layer superior encobrindo) -->
-                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
+                            <!-- A gengiva agora vai até o limite 280, escondendo completamente a raiz na descida -->
+                            <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 280 L 0 280 Z" />
                         </svg>
                     </div>
                 </div>
