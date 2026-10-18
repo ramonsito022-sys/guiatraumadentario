@@ -67,12 +67,10 @@
         /* SVG do Dente e Gengiva */
         .tooth-svg { width: 150px; height: 200px; overflow: visible; }
         .gum { fill: #be185d; }
-        .root { fill: #e2e8f0; } 
+        .root { fill: #cbd5e1; } /* Cor levemente diferente para a raiz aparecer na extrusão */
         .tooth { fill: #f8fafc; transition: all 0.3s ease; }
 
-        /* O truque para a Intrusiva: Gengiva sobreposta com index-z maior (ou desenhada por último no SVG) */
-        /* A animação joga o grupo do dente pra cima (y negativo) e a gengiva (desenhada por cima) cobre a coroa. */
-
+        /* Controladores das animações */
         .anim-avulsao .tooth-group { animation: avulsao 3s infinite ease-in-out; }
         .anim-concussao .tooth-group { animation: pulse-red 2s infinite; }
         .anim-subluxacao .tooth-group { animation: shake 0.5s infinite; transform-origin: 50% 50%; }
@@ -80,13 +78,18 @@
         .anim-lateral .tooth-group { animation: lateral 2s infinite alternate ease-in-out; transform-origin: 50% 120px; }
         .anim-intrusiva .tooth-group { animation: intrusao 2s infinite alternate ease-in-out; }
 
-        /* Keyframes */
+        /* Keyframes Corrigidos */
         @keyframes avulsao { 0% { transform: translateY(0); } 40% { transform: translateY(-100px) rotate(15deg); } 60% { transform: translateY(-100px) rotate(15deg); } 100% { transform: translateY(0); } }
         @keyframes pulse-red { 0% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.8)); } 100% { filter: drop-shadow(0 0 0 rgba(239, 68, 68, 0)); } }
         @keyframes shake { 0% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-1deg); } 50% { transform: translateX(2px) rotate(1deg); } 75% { transform: translateX(-2px) rotate(-1deg); } 100% { transform: translateX(0) rotate(0); } }
-        @keyframes extrusao { 0% { transform: translateY(0); } 100% { transform: translateY(25px); } }
+        
+        /* Extrusão: Dente sai (Move para cima = -Y) */
+        @keyframes extrusao { 0% { transform: translateY(0); } 100% { transform: translateY(-25px); } } 
+        
         @keyframes lateral { 0% { transform: rotate(0); } 100% { transform: rotate(12deg); } }
-        @keyframes intrusao { 0% { transform: translateY(0); } 100% { transform: translateY(-35px); } } /* Dente afunda mais para a gengiva engolir a coroa */
+        
+        /* Intrusão: Dente afunda (Move para baixo = +Y) */
+        @keyframes intrusao { 0% { transform: translateY(0); } 100% { transform: translateY(35px); } } 
 
         /* ABAS MODERNA */
         .tabs-container { display: flex; flex-direction: column; gap: 20px; }
@@ -115,7 +118,7 @@
         footer p { color: var(--text-muted); }
         .footer-brand { font-size: 1.5em; color: var(--primary); font-weight: bold; margin-bottom: 10px; }
 
-        /* KEYFRAMES GERAIS */
+        /* KEYFRAMES DE ENTRADA */
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -160,14 +163,11 @@
                 <h3>Animação: Reimplante Correto</h3>
                 <div class="visual-box anim-avulsao">
                     <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Fundo do alvéolo -->
                         <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
-                        <!-- Dente (desenhado antes da gengiva) -->
                         <g class="tooth-group">
                             <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                             <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                         </g>
-                        <!-- Gengiva (desenhada por cima de tudo) -->
                         <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
                     </svg>
                 </div>
@@ -226,16 +226,14 @@
                 <div id="extrusiva" class="tab-pane">
                     <span class="badge badge-vermelho">Alta Gravidade</span>
                     <h3 style="color: var(--primary); font-size: 1.8em;">Luxação Extrusiva</h3>
-                    <p>Deslocamento parcial do dente para fora do osso. Fica "mais comprido".</p>
+                    <p>Deslocamento parcial do dente para fora do osso. Fica "mais comprido" e expõe levemente a raiz.</p>
                     <div class="visual-box anim-extrusiva">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Fundo do alvéolo -->
                             <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <!-- Gengiva -->
                             <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
                         </svg>
                     </div>
@@ -248,7 +246,6 @@
                     <p>Deslocamento para os lados. Fica travado no osso e imóvel (som metálico).</p>
                     <div class="visual-box anim-lateral">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Fundo do alvéolo -->
                             <path fill="#020617" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
@@ -259,20 +256,18 @@
                     </div>
                 </div>
 
-                <!-- INTRUSIVA (Corrigida) -->
+                <!-- INTRUSIVA -->
                 <div id="intrusiva" class="tab-pane">
                     <span class="badge badge-vermelho">Emergência Crítica</span>
                     <h3 style="color: var(--primary); font-size: 1.8em;">Luxação Intrusiva</h3>
-                    <p>O dente é empurrado para o interior do alvéolo. A coroa apresenta-se encurtada.</p>
+                    <p>O dente é empurrado para o interior do alvéolo. A coroa é invadida pela gengiva e fica encurtada.</p>
                     <div class="visual-box anim-intrusiva">
                         <svg class="tooth-svg" viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Como a gengiva é desenhada POR ÚLTIMO, quando o dente sobe na animação (eixo Y negativo),
-                                 a gengiva encobre parte ou quase toda a coroa, simulando a intrusão perfeita -->
                             <g class="tooth-group">
                                 <path class="root" d="M 40 100 C 40 100, 35 170, 60 170 C 85 170, 80 100, 80 100 Z" />
                                 <path class="tooth" d="M 40 100 C 30 100, 20 60, 25 30 C 35 10, 85 10, 95 30 C 100 60, 90 100, 80 100 Z" />
                             </g>
-                            <!-- Gengiva (Layer superior cobrindo) -->
+                            <!-- Gengiva (Layer superior encobrindo) -->
                             <path class="gum" d="M 0 95 Q 60 120 120 95 L 120 200 L 0 200 Z" />
                         </svg>
                     </div>
