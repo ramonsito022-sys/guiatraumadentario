@@ -54,6 +54,8 @@
         /* CARDS E GRIDS */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        
         .card { background: var(--bg-card); border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); border-color: rgba(56, 189, 248, 0.3); }
         .card-alert { border-top: 4px solid var(--danger); }
@@ -135,13 +137,34 @@
         .tl-content { background: var(--bg-card); padding: 20px; border-radius: 10px; border: 1px solid #334155; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .tl-date { font-weight: bold; color: var(--primary); font-size: 1.2em; margin-bottom: 5px; display: inline-block; }
 
-        /* ACORDEÃO */
+        /* ACORDEÃO E MATERIAIS DE APOIO */
         .accordion { background: var(--bg-card); color: var(--text-main); cursor: pointer; padding: 20px; width: 100%; border: 1px solid #334155; text-align: left; outline: none; font-size: 1.2em; font-weight: 600; transition: 0.4s; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .accordion:hover, .accordion.active-acc { background: #334155; border-color: var(--primary); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
         .accordion::after { content: '+'; font-size: 1.5em; color: var(--primary); font-weight: 300; transition: 0.3s; }
         .accordion.active-acc::after { content: "−"; transform: rotate(180deg); color: var(--danger); }
         .panel { padding: 0 20px; background: rgba(30, 41, 59, 0.5); border-left: 2px solid var(--primary); max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-radius: 0 0 10px 10px; margin-top: -10px; margin-bottom: 15px; }
         .panel-content { padding: 20px 0; color: var(--text-muted); font-size: 1.1em; }
+
+        /* BOTÃO DE DOWNLOAD PDF */
+        .btn-download { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.2em; box-shadow: 0 5px 20px rgba(56, 189, 248, 0.4); transition: transform 0.3s, box-shadow 0.3s; width: 100%; max-width: 400px; margin: 20px auto; text-align: center; }
+        .btn-download:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.6); }
+
+        /* CARTOES DE VÍDEO YOUTUBE */
+        .video-card { background: var(--bg-card); border-radius: 15px; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s, border-color 0.3s; display: block; text-decoration: none; color: var(--text-main); }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--danger); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3); }
+        .video-thumb { width: 100%; height: 160px; background: #111827; position: relative; display: flex; justify-content: center; align-items: center; }
+        /* Miniaturas dos vídeos usando a API pública do Youtube (maxresdefault/hqdefault) */
+        .thumb-1 { background: url('https://img.youtube.com/vi/mu5u-XKX2gg/hqdefault.jpg') center/cover; }
+        .thumb-2 { background: url('https://img.youtube.com/vi/FcqZIS1RJ3Q/hqdefault.jpg') center/cover; }
+        .thumb-3 { background: url('https://img.youtube.com/vi/iZXmWQqCT7A/hqdefault.jpg') center/cover; }
+        .thumb-4 { background: url('https://img.youtube.com/vi/FG3Rub_EVTY/hqdefault.jpg') center/cover; }
+        
+        .play-icon { width: 50px; height: 50px; background: rgba(239, 68, 68, 0.9); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); transition: transform 0.3s; }
+        .play-icon::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 10px 0 10px 15px; border-color: transparent transparent transparent white; margin-left: 5px; }
+        .video-card:hover .play-icon { transform: scale(1.1); }
+        .video-info { padding: 15px; }
+        .video-title { font-weight: 600; font-size: 0.95em; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .video-author { color: var(--text-muted); font-size: 0.8em; }
 
         /* FOOTER */
         footer { background: #020617; text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid #1e293b; }
@@ -164,7 +187,8 @@
         <a href="#luxacao">Luxações</a>
         <a href="#fluxograma">Fluxograma</a>
         <a href="#farmacologia">💊 Farmacologia</a>
-        <a href="#acompanhamento">📅 Follow-up</a>
+        <a href="#materiais">📚 Materiais e Vídeos</a>
+        <a href="#ajuda">📍 SOS Jequié</a>
     </nav>
 
     <header id="topo">
@@ -381,7 +405,7 @@
         </div>
     </section>
 
-    <!-- NOVA SEÇÃO: FARMACOLOGIA -->
+    <!-- FARMACOLOGIA -->
     <section id="farmacologia" class="container fade-in">
         <h2 class="section-title">💊 Farmacologia <span>Pós-Procedimento</span></h2>
         <p style="color: var(--text-muted); margin-bottom: 20px;">Prescrições recomendadas para prevenir infecções secundárias, reabsorções inflamatórias e controlar a dor.</p>
@@ -432,7 +456,7 @@
         </div>
     </section>
 
-    <!-- NOVA SEÇÃO: ACOMPANHAMENTO POSTERIOR -->
+    <!-- ACOMPANHAMENTO POSTERIOR -->
     <section id="acompanhamento" class="container fade-in">
         <h2 class="section-title">📅 Acompanhamento <span>(Follow-Up)</span></h2>
         <p style="color: var(--text-muted); margin-bottom: 30px;">Um dente traumatizado exige avaliação periódica clínica e radiográfica para detectar reabsorções radiculares inflamatórias ou de substituição (anquilose) a tempo.</p>
@@ -477,21 +501,94 @@
         </div>
     </section>
 
+    <!-- SEÇÃO: MATERIAIS DE APOIO E VÍDEOS -->
+    <section id="materiais" class="container fade-in">
+        <h2 class="section-title">📚 Materiais <span>e Vídeos</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Descarregue o nosso guia informativo ou assista às instruções em vídeo.</p>
+
+        <!-- Botão de Download do PDF -->
+        <div style="text-align: center; margin-bottom: 50px;">
+            <a href="Trauma_dentario.pdf" download class="btn-download">
+                📄 Descarregar Guia Informativo (PDF)
+            </a>
+        </div>
+
+        <!-- Galeria de Vídeos (YouTube) -->
+        <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5em;">Instruções em Vídeo</h3>
+        <div class="grid-4">
+            <!-- Vídeo 1 -->
+            <a href="https://youtu.be/mu5u-XKX2gg?is=ytrqk-krX3l0FIbx" target="_blank" class="video-card">
+                <div class="video-thumb thumb-1">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">O que fazer em casos de trauma dentário</div>
+                    <div class="video-author">Sorria Melhor</div>
+                </div>
+            </a>
+
+            <!-- Vídeo 2 -->
+            <a href="https://youtu.be/FcqZIS1RJ3Q?feature=shared" target="_blank" class="video-card">
+                <div class="video-thumb thumb-2">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Histórias da dentista Dra Lia - "Dra, meu filho machucou o dente de leite... e agora?"</div>
+                    <div class="video-author">Traumatismo Dentário, Machuquei o dente! E agora?</div>
+                </div>
+            </a>
+
+            <!-- Vídeo 3 -->
+            <a href="https://youtu.be/iZXmWQqCT7A?feature=shared" target="_blank" class="video-card">
+                <div class="video-thumb thumb-3">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Trauma dentário: Orientações para Crianças</div>
+                    <div class="video-author">Traumatismo Dentário, Machuquei o dente! E agora?</div>
+                </div>
+            </a>
+
+            <!-- Vídeo 4 -->
+            <a href="https://youtu.be/FG3Rub_EVTY?is=fzozc4qeE85FwqtU" target="_blank" class="video-card">
+                <div class="video-thumb thumb-4">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Traumatismo dentário | Primeiros socorros</div>
+                    <div class="video-author">SIKANA Brasil / Português</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
     <!-- ORIENTAÇÕES AO PACIENTE -->
     <section id="comunicacao" class="container fade-in">
         <h2 class="section-title">💬 Orientação <span>ao Paciente</span></h2>
+        
+        <div class="card" style="margin-bottom: 30px; border-left: 5px solid var(--primary);">
+            <h3 style="margin-bottom: 10px;">Como proteger a sua boca e evitar traumas?</h3>
+            <ul style="color: var(--text-muted);">
+                <li>Evite circular em pisos molhados, principalmente usando calçado com solas lisas.</li>
+                <li>Na prática de desportos como a natação, tenha cuidado com os movimentos, sobretudo perto da borda da piscina.</li>
+                <li>Utilize <strong>protetores bucais</strong> em atividades com alto risco de trauma (ex: Patinagem, Skate, Slackline, Atividades circenses, não apenas em artes marciais).</li>
+            </ul>
+        </div>
+
         <div class="grid-2">
             <div>
                 <button class="accordion">O que aconteceu com meu dente?</button>
-                <div class="panel"><div class="panel-content">Com a força da pancada, seu dente pode ter saído do lugar, afundado ou caído inteiro. É uma emergência, mas na grande maioria dos casos tem conserto se você agir rápido.</div></div>
+                <div class="panel"><div class="panel-content">
+                    O trauma dentário ocorre quando existe uma lesão que afeta a gengiva, os dentes, os ossos de suporte ou qualquer tecido mole da região da boca (bochechas, língua, lábios). Com a força da pancada, seu dente pode ter saído do lugar, afundado ou caído inteiro. É uma emergência, mas na grande maioria dos casos tem conserto se você agir rápido.
+                </div></div>
 
                 <button class="accordion">O que devo fazer IMEDIATAMENTE?</button>
                 <div class="panel"><div class="panel-content">
-                    1. Mantenha a calma e lave a boca.<br>
-                    2. Se o dente caiu, pegue-o <strong>só pela coroa</strong>.<br>
-                    3. Lave em menos de 10s se estiver sujo.<br>
-                    4. Guarde em <strong>LEITE, SORO ou SALIVA</strong>.<br>
-                    5. Corra para o dentista!
+                    1. Mantenha a calma e se a região estiver a sangrar, use um pano limpo ou gaze para estancar o sangue.<br>
+                    2. Se o dente caiu (avulsão), pegue-o <strong>só pela coroa</strong>.<br>
+                    3. Lave em menos de 10s se estiver sujo com a sua própria saliva ou soro fisiológico.<br>
+                    4. Tente recolocá-lo no lugar. Se não for possível, guarde o dente coberto com saliva contendo sangue do próprio paciente, soro ou leite de vaca fresco.<br>
+                    5. Corra para o dentista! Em casos de avulsão, o dente deverá receber atendimento especializado no máximo em até 45 minutos após o acidente.
                 </div></div>
             </div>
             <div>
@@ -499,7 +596,7 @@
                 <div class="panel"><div class="panel-content">
                     ❌ <strong>NÃO</strong> esfregue a raiz do dente.<br>
                     ❌ <strong>NÃO</strong> guarde o dente em papel seco.<br>
-                    ❌ <strong>NÃO</strong> coloque em água da torneira.<br>
+                    ❌ <strong>NÃO</strong> lave o dente com água da torneira.<br>
                     ❌ <strong>NÃO</strong> reimplante dente de leite sozinho.
                 </div></div>
 
