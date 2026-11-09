@@ -153,7 +153,6 @@
         .video-card { background: var(--bg-card); border-radius: 15px; overflow: hidden; border: 1px solid #334155; transition: transform 0.3s, border-color 0.3s; display: block; text-decoration: none; color: var(--text-main); }
         .video-card:hover { transform: translateY(-5px); border-color: var(--danger); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3); }
         .video-thumb { width: 100%; height: 160px; background: #111827; position: relative; display: flex; justify-content: center; align-items: center; }
-        /* Miniaturas dos vídeos usando a API pública do Youtube (maxresdefault/hqdefault) */
         .thumb-1 { background: url('https://img.youtube.com/vi/mu5u-XKX2gg/hqdefault.jpg') center/cover; }
         .thumb-2 { background: url('https://img.youtube.com/vi/FcqZIS1RJ3Q/hqdefault.jpg') center/cover; }
         .thumb-3 { background: url('https://img.youtube.com/vi/iZXmWQqCT7A/hqdefault.jpg') center/cover; }
@@ -165,6 +164,13 @@
         .video-info { padding: 15px; }
         .video-title { font-weight: 600; font-size: 0.95em; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .video-author { color: var(--text-muted); font-size: 0.8em; }
+
+        /* REFERÊNCIAS BIBLIOGRÁFICAS */
+        .ref-card { background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 15px; transition: border-color 0.3s; }
+        .ref-card:hover { border-color: var(--primary); }
+        .ref-number { font-weight: bold; color: var(--primary); margin-right: 8px; }
+        .ref-link { color: var(--primary); text-decoration: none; word-break: break-all; }
+        .ref-link:hover { text-decoration: underline; }
 
         /* FOOTER */
         footer { background: #020617; text-align: center; padding: 40px 20px; margin-top: 60px; border-top: 1px solid #1e293b; }
@@ -185,9 +191,11 @@
     <nav>
         <a href="#avulsao">🚑 Avulsão</a>
         <a href="#luxacao">Luxações</a>
+        <a href="#exame-clinico">📋 Exame Clínico</a>
         <a href="#fluxograma">Fluxograma</a>
         <a href="#farmacologia">💊 Farmacologia</a>
         <a href="#materiais">📚 Materiais e Vídeos</a>
+        <a href="#referencias">📖 Referências</a>
         <a href="#ajuda">📍 SOS Jequié</a>
     </nav>
 
@@ -325,6 +333,66 @@
                         </svg>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROTOCOLO CLÍNICO DE AVALIAÇÃO (CIRURGIÃO-DENTISTA) -->
+    <section id="exame-clinico" class="container fade-in">
+        <h2 class="section-title">📋 Protocolo Clínico de <span>Avaliação Odontológica</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Etapas sistemáticas obrigatórias para o diagnóstico preciso e planejamento terapêutico do cirurgião-dentista.</p>
+
+        <div class="grid-2">
+            <!-- 1. ANAMNESE E HISTÓRICO -->
+            <div class="card card-warning">
+                <h3>1. Anamnese Direcionada</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Investigação sistemática do evento traumático:</p>
+                <ul>
+                    <li><strong>Como aconteceu?</strong> Determina a direção da força e risco de fraturas associadas.</li>
+                    <li><strong>Quando aconteceu?</strong> O tempo decorrido é determinante para o prognóstico pulpar e periodontal.</li>
+                    <li><strong>Onde aconteceu?</strong> Avalia o grau de contaminação e a necessidade de profilaxia antitetânica.</li>
+                    <li><strong>Houve perda de consciência, náuseas ou tontura?</strong> Investigar trauma cranioencefálico (TCE); encaminhar para atendimento médico se necessário.</li>
+                    <li><strong>Queixas atuais:</strong> Dor espontânea, dor à mastigação, alteração oclusal ou sensibilidade térmica.</li>
+                </ul>
+            </div>
+
+            <!-- 2. EXAME CLÍNICO FÍSICO -->
+            <div class="card card-alert">
+                <h3>2. Exame Clínico Extra e Intraoral</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Avaliação minuciosa de tecidos moles e duros:</p>
+                <ul>
+                    <li><strong>Tecidos Moles:</strong> Inspeção e palpação de lábios, bochechas, língua e gengiva (pesquisa de lacerações, corpos estranhos enclausurados ou sangramento no sulco).</li>
+                    <li><strong>Inspeção Dental:</strong> Mudança de cor, alteração de posição no arco, trincas ou fraturas de coroa (esmalte/dentina/polpa).</li>
+                    <li><strong>Teste de Mobilidade:</strong> Graduação da mobilidade dental (grau I, II ou III) nos sentidos vestíbulo-lingual e axial.</li>
+                    <li><strong>Percussão e Palpação:</strong> Percussão vertical e horizontal. Resposta dolosa indica lesão ao ligamento periodontal; som metálico indica anquilose/travamento ósseo (luxação lateral/intrusão).</li>
+                    <li><strong>Teste de Sensibilidade Pulpar:</strong> Teste térmico (frio) no dente traumatizado e dentes adjacentes/homólogos de controle. *Nota: Respostas falso-negativas são frequentes na fase aguda.</li>
+                </ul>
+            </div>
+
+            <!-- 3. EXAME RADIOGRÁFICO E IMAGINOLÓGICO -->
+            <div class="card card-success">
+                <h3>3. Exame Imaginológico</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Protocolo radiográfico completo segundo a IADT:</p>
+                <ul>
+                    <li><strong>Tomadas Periapicais em 3 Angulações:</strong>
+                        <br>• Ortorradial
+                        <br>• Mesiorradial
+                        <br>• Distorradial
+                        <br><em>Objetivo:</em> Diagnosticar fraturas radiculares horizontais/oblíquas e avaliar o espaço do ligamento periodontal.</li>
+                    <li><strong>Radiografia Oclusal:</strong> Fundamental para avaliar fraturas da tábua óssea alveolar em maxila anterior.</li>
+                    <li><strong>Tomografia Computadorizada de Feixe Cônico (TCFC):</strong> Indicada em casos duvidosos de fratura radicular, luxações complexas (intrusão/lateral) ou suspeita de fratura alveolar.</li>
+                </ul>
+            </div>
+
+            <!-- 4. DIAGNÓSTICO E CONDUTA -->
+            <div class="card" style="border-top: 4px solid var(--primary);">
+                <h3>4. Síntese Diagnóstica e Registro</h3>
+                <p style="color: var(--text-muted); margin-bottom: 15px;">Fechamento do plano de ação inicial:</p>
+                <ul>
+                    <li>Classificar a lesão (Fratura coronária, Fratura corono-radicular, Concussão, Subluxação, Luxação extrusiva/lateral/intrusiva ou Avulsão).</li>
+                    <li>Verificar o estágio de desenvolvimento radicular (<strong>Ápice Aberto / Rizogênese Incompleta</strong> vs <strong>Ápice Fechado</strong>).</li>
+                    <li>Registrar os achados iniciais em prontuário (servirão de parâmetro comparativo durante o acompanhamento de proservação).</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -612,6 +680,28 @@
                     ✔️ <strong>Retorno:</strong> Consultas e raio-x periódicos são obrigatórios para salvar o dente a longo prazo.
                 </div></div>
             </div>
+        </div>
+    </section>
+
+    <!-- REFERÊNCIAS BIBLIOGRÁFICAS -->
+    <section id="referencias" class="container fade-in">
+        <h2 class="section-title">📖 Referências <span>Bibliográficas</span></h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px;">Literatura científica de suporte para os protocolos apresentados neste site:</p>
+
+        <div class="ref-card">
+            <p><span class="ref-number">1.</span> <strong>BOURGUIGNON, C.; COHENCA, N.; LAURIDSEN, E. et al.</strong> International Association of Dental Traumatology guidelines for the management of traumatic dental injuries: 1. Fractures and luxations. <em>Dental Traumatology</em>, v. 36, n. 4, p. 314-330, 2020. DOI: <a href="https://doi.org/10.1111/edt.12578" target="_blank" class="ref-link">10.1111/edt.12578</a></p>
+        </div>
+
+        <div class="ref-card">
+            <p><span class="ref-number">2.</span> <strong>SILVA, E. J. N. L.; PINTO, K. P.; SEGATO, R. A. B.; NELSON-FILHO, P.</strong> Diretrizes da Associação Internacional de Traumatologia Dentária para a abordagem de lesões dentárias traumáticas (Tradução Oficial IADT para o Português). <em>IADT Guidelines</em>, 2020. Disponível em: <a href="http://iadt-dentaltrauma.org" target="_blank" class="ref-link">http://iadt-dentaltrauma.org</a>.</p>
+        </div>
+
+        <div class="ref-card">
+            <p><span class="ref-number">3.</span> <strong>GABARDO, M. C. L. et al.</strong> Gestão de traumatismo dentário segundo a International Association of Dental Traumatology (IADT): atualizações recentes. <em>RSBO (Revista Sul-Brasileira de Odontologia)</em>, v. 20, n. 2, p. 328-335, 2023.</p>
+        </div>
+
+        <div class="ref-card">
+            <p><span class="ref-number">4.</span> <strong>DAY, P. F.; FLORES, M. T.; O'CONNELL, A. C. et al.</strong> International Association of Dental Traumatology guidelines for the management of traumatic dental injuries: 3. Injuries in the primary dentition. <em>Dental Traumatology</em>, v. 36, n. 4, p. 343-359, 2020. DOI: <a href="https://doi.org/10.1111/edt.12576" target="_blank" class="ref-link">10.1111/edt.12576</a></p>
         </div>
     </section>
 
